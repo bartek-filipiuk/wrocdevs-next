@@ -13,6 +13,7 @@ import { UpcomingEvents } from '../../blocks/UpcomingEvents/config'
 import { CoursesShowcase } from '../../blocks/CoursesShowcase/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { ContactCTA } from '../../blocks/ContactCTA/config'
+import { EmbedBlock } from '../../blocks/EmbedBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -91,6 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MediaBlock,
                 Archive,
                 FormBlock,
+                EmbedBlock,
               ],
               required: true,
               localized: true,
