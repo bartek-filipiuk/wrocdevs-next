@@ -31,6 +31,7 @@ jobs:
           username: ${{ secrets.DO_USERNAME }}
           key: ${{ secrets.DO_SSH_KEY }}
           port: ${{ secrets.DO_PORT || 22 }}
+          command_timeout: 30m
           script_stop: true
           script: |
             set -e
@@ -44,21 +45,6 @@ jobs:
 
             echo "=== Loading environment ==="
             source .env
-
-            echo "=== DEBUG INFO ==="
-            echo "User: $(whoami)"
-            echo "ID: $(id)"
-            echo "PWD: $(pwd)"
-            echo "Shell: $SHELL"
-            echo "DB_PASSWORD set: ${DB_PASSWORD:+YES}"
-            echo "PAYLOAD_SECRET set: ${PAYLOAD_SECRET:+YES}"
-            echo "Sudo permissions:"
-            sudo -l 2>&1 || echo "sudo -l failed"
-            echo "Testing sudo docker:"
-            sudo docker --version 2>&1 || echo "sudo docker failed"
-            echo "Testing sudo docker ps:"
-            sudo docker ps 2>&1 || echo "sudo docker ps failed"
-            echo "=== END DEBUG ==="
 
             echo "=== Building and starting containers ==="
             if [ "${{ github.event.inputs.skip_build }}" = "true" ]; then
