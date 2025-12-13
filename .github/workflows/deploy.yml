@@ -47,20 +47,11 @@ jobs:
             source .env
 
             echo "=== Building and starting containers ==="
-            if [ "${{ github.event.inputs.skip_build }}" = "true" ]; then
-              echo "Skipping build, just restarting..."
-              sudo docker compose -f docker-compose.prod.yml restart app
-            else
-              echo "Building Docker image with Payload CMS support..."
-              sudo DOCKER_BUILDKIT=1 docker build \
-                --network=host \
-                --build-arg DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
-                --build-arg PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
-                -t wrocdevs-app:latest .
+            echo "Building Docker image with Payload CMS support..."
+            sudo DOCKER_BUILDKIT=1 docker build --network=host --build-arg DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" --build-arg PAYLOAD_SECRET="${PAYLOAD_SECRET}" -t wrocdevs-app:latest .
 
-              echo "Restarting app container..."
-              sudo docker compose -f docker-compose.prod.yml up -d --force-recreate app
-            fi
+            echo "Restarting app container..."
+            sudo docker compose -f docker-compose.prod.yml up -d --force-recreate app
 
             echo "=== Waiting for app to be healthy ==="
             sleep 10
