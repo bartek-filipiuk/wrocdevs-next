@@ -48,27 +48,27 @@ jobs:
             echo "=== Building and starting containers ==="
             if [ "${{ github.event.inputs.skip_build }}" = "true" ]; then
               echo "Skipping build, just restarting..."
-              sg docker -c "docker compose -f docker-compose.prod.yml restart app"
+              sudo docker compose -f docker-compose.prod.yml restart app
             else
               echo "Building Docker image with Payload CMS support..."
-              sg docker -c "DOCKER_BUILDKIT=1 docker build \
+              sudo DOCKER_BUILDKIT=1 docker build \
                 --network=host \
-                --build-arg DATABASE_URI=\"postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload\" \
-                --build-arg PAYLOAD_SECRET=\"${PAYLOAD_SECRET}\" \
-                -t wrocdevs-app:latest ."
+                --build-arg DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
+                --build-arg PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
+                -t wrocdevs-app:latest .
 
               echo "Restarting app container..."
-              sg docker -c "docker compose -f docker-compose.prod.yml up -d --force-recreate app"
+              sudo docker compose -f docker-compose.prod.yml up -d --force-recreate app
             fi
 
             echo "=== Waiting for app to be healthy ==="
             sleep 10
 
             echo "=== Cleaning up old images ==="
-            sg docker -c "docker image prune -f"
+            sudo docker image prune -f
 
             echo "=== Deployment completed ==="
-            sg docker -c "docker compose -f docker-compose.prod.yml ps"
+            sudo docker compose -f docker-compose.prod.yml ps
 
       - name: Health Check
         uses: appleboy/ssh-action@v1.0.3
@@ -88,7 +88,7 @@ jobs:
               sleep 5
             done
             echo "Health check failed!"
-            sg docker -c "docker compose -f /var/www/wrocdevs.com/docker-compose.prod.yml logs --tail=50 app"
+            sudo docker compose -f /var/www/wrocdevs.com/docker-compose.prod.yml logs --tail=50 app
             exit 1
 
   notify:
