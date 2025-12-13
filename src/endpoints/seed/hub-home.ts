@@ -35,7 +35,7 @@ const createRichText = (text: string) => ({
 export const hubHome: RequiredDataFromCollectionSlug<'pages'> = {
   slug: 'home',
   _status: 'published',
-  title: 'Hub Home',
+  title: 'WrocDevs - Strona główna',
   hero: {
     type: 'none',
   },
@@ -44,199 +44,72 @@ export const hubHome: RequiredDataFromCollectionSlug<'pages'> = {
     {
       blockType: 'glassHero',
       blockName: 'Hero Section',
-      headline: 'Your Community Hub for Learning & Connection',
+      headline: 'WrocDevs - Społeczność Developerów Wrocławia',
       subheadline: createRichText(
-        'Join our vibrant community of learners, creators, and innovators. Discover exciting meetups, hands-on courses, and networking opportunities.',
+        'Dołącz do naszych meetupów, poznawaj ludzi ze świata IT i rozwijaj się razem z nami. Spotkania, prezentacje i networking dla programistów z Wrocławia.',
       ),
       primaryCTA: {
         type: 'custom',
         appearance: 'default',
-        label: 'Explore Events',
+        label: 'Nadchodzące wydarzenia',
         url: '/events',
         newTab: false,
       },
       secondaryCTA: {
         type: 'custom',
         appearance: 'outline',
-        label: 'View Courses',
-        url: '/courses',
+        label: 'Dołącz do nas',
+        url: '/contact',
         newTab: false,
       },
-    },
-    // Features Block
-    {
-      blockType: 'features',
-      blockName: 'What We Offer',
-      sectionTitle: 'What We Offer',
-      sectionDescription:
-        'Everything you need to grow, connect, and succeed in your professional journey.',
-      features: [
-        {
-          icon: 'calendar',
-          title: 'Weekly Meetups',
-          description:
-            'Connect with like-minded professionals at our regular community gatherings. Network, share ideas, and build lasting relationships.',
-        },
-        {
-          icon: 'book',
-          title: 'Expert-Led Courses',
-          description:
-            'Learn from industry experts in hands-on courses designed to accelerate your career. From beginner to advanced levels.',
-        },
-        {
-          icon: 'users',
-          title: 'Vibrant Community',
-          description:
-            'Join a supportive community of 5,000+ members. Collaborate on projects, find mentors, and grow together.',
-        },
-        {
-          icon: 'star',
-          title: 'Exclusive Workshops',
-          description:
-            'Participate in intensive workshops and hackathons. Put your skills to the test and learn by doing.',
-        },
-      ],
     },
     // Upcoming Events Block
     {
       blockType: 'upcomingEvents',
-      blockName: 'Upcoming Events',
-      sectionTitle: 'Upcoming Events',
-      sectionDescription:
-        "Don't miss out on these exciting upcoming events. Reserve your spot today!",
+      blockName: 'Nadchodzące wydarzenia',
+      sectionTitle: 'Nadchodzące wydarzenia',
+      sectionDescription: 'Nie przegap najbliższych spotkań! Zarezerwuj miejsce już dziś.',
       events: [
         {
-          title: 'Tech Talks: AI & Machine Learning',
+          title: 'Czy AI może być naszym juniorem?',
           description:
-            'Join us for an evening of insights into the latest AI trends and practical applications in business.',
-          date: '2025-01-15T18:00:00.000Z',
-          location: 'Downtown Innovation Hub',
+            'Meetup o wykorzystaniu AI w codziennej pracy developera. Czy sztuczna inteligencja może zastąpić juniora w zespole?',
+          date: '2026-01-28T18:00:00.000Z',
+          location: 'inQube Wrocław, ul. Wielka 67',
           link: {
             type: 'custom',
-            label: 'Register Now',
-            url: '/events/tech-talks-ai',
-            newTab: false,
-          },
-        },
-        {
-          title: 'Design Systems Workshop',
-          description:
-            'A hands-on workshop on building scalable design systems for modern web applications.',
-          date: '2025-01-22T10:00:00.000Z',
-          location: 'Creative Space Studio',
-          link: {
-            type: 'custom',
-            label: 'Register Now',
-            url: '/events/design-workshop',
-            newTab: false,
-          },
-        },
-        {
-          title: 'Networking Night: Startup Edition',
-          description:
-            'Connect with founders, investors, and startup enthusiasts. Pitch your ideas and find co-founders.',
-          date: '2025-02-01T19:00:00.000Z',
-          location: 'Main Hall Conference Center',
-          link: {
-            type: 'custom',
-            label: 'Register Now',
-            url: '/events/networking-night',
+            label: 'Zarejestruj się',
+            url: '/events/czy-ai-moze-byc-naszym-juniorem',
             newTab: false,
           },
         },
       ],
       viewAllLink: {
         type: 'custom',
-        label: 'View All Events',
+        label: 'Wszystkie wydarzenia',
         url: '/events',
-        newTab: false,
-      },
-    },
-    // Courses Showcase Block
-    {
-      blockType: 'coursesShowcase',
-      blockName: 'Popular Courses',
-      sectionTitle: 'Popular Courses',
-      sectionDescription:
-        'Accelerate your career with our most popular courses taught by industry experts.',
-      courses: [
-        {
-          title: 'Full-Stack Web Development',
-          description:
-            'Master modern web development with React, Node.js, and databases. Build real-world projects from scratch.',
-          duration: '12 weeks',
-          level: 'beginner',
-          price: '$499',
-          link: {
-            type: 'custom',
-            label: 'Enroll Now',
-            url: '/courses/web-development',
-            newTab: false,
-          },
-        },
-        {
-          title: 'UI/UX Design Masterclass',
-          description:
-            'Learn user-centered design principles, Figma, prototyping, and how to create stunning user experiences.',
-          duration: '8 weeks',
-          level: 'intermediate',
-          price: '$349',
-          link: {
-            type: 'custom',
-            label: 'Enroll Now',
-            url: '/courses/ui-ux-design',
-            newTab: false,
-          },
-        },
-        {
-          title: 'Data Science & Analytics',
-          description:
-            'Dive into Python, machine learning, data visualization, and statistical analysis for data-driven decisions.',
-          duration: '16 weeks',
-          level: 'advanced',
-          price: '$699',
-          link: {
-            type: 'custom',
-            label: 'Enroll Now',
-            url: '/courses/data-science',
-            newTab: false,
-          },
-        },
-      ],
-      viewAllLink: {
-        type: 'custom',
-        label: 'Browse All Courses',
-        url: '/courses',
         newTab: false,
       },
     },
     // Testimonials Block
     {
       blockType: 'testimonials',
-      blockName: 'Testimonials',
-      sectionTitle: 'What Our Community Says',
-      sectionDescription:
-        'Hear from members who have transformed their careers through our programs.',
+      blockName: 'Opinie',
+      sectionTitle: 'Co mówią o nas',
+      sectionDescription: 'Poznaj opinie uczestników naszych spotkań.',
       testimonials: [
         {
           quote:
-            'The web development course completely changed my career trajectory. Within 3 months of completing it, I landed my dream job at a tech startup. The instructors are amazing!',
-          author: 'Sarah Chen',
-          role: 'Software Developer at TechCorp',
+            'WrocDevs to świetna okazja do poznania ludzi z branży. Każdy meetup to nowe kontakty i ciekawe rozmowy.',
+          author: 'Uczestnik meetupu',
+          role: 'Software Developer',
           rating: 5,
         },
         {
           quote:
-            "I've attended dozens of meetups here and every single one has been valuable. The community is incredibly welcoming and I've made connections that have led to real business opportunities.",
-          author: 'Michael Torres',
-          role: 'Startup Founder',
-          rating: 5,
-        },
-        {
-          quote:
-            "As someone transitioning from a non-tech background, the support I received was incredible. The courses are well-structured and the mentorship program is a game-changer.",
-          author: 'Emily Johnson',
-          role: 'Product Designer',
+            'Prezentacje na wysokim poziomie, a atmosfera zawsze sprzyja networkingowi. Polecam każdemu developerowi z Wrocławia!',
+          author: 'Uczestnik meetupu',
+          role: 'Tech Lead',
           rating: 5,
         },
       ],
@@ -244,31 +117,29 @@ export const hubHome: RequiredDataFromCollectionSlug<'pages'> = {
     // Contact CTA Block
     {
       blockType: 'contactCTA',
-      blockName: 'Get Started',
-      headline: 'Ready to Start Your Journey?',
+      blockName: 'Dołącz do nas',
+      headline: 'Dołącz do społeczności WrocDevs!',
       description: createRichText(
-        'Join thousands of learners and professionals who are already part of our community. Get access to exclusive events, courses, and networking opportunities.',
+        'Bądź na bieżąco z nadchodzącymi wydarzeniami. Śledź nas w mediach społecznościowych i nie przegap żadnego meetupu.',
       ),
-      contactEmail: 'hello@yourhub.com',
-      contactPhone: '+1 (555) 123-4567',
+      contactEmail: 'kontakt@wrocdevs.pl',
       socialLinks: [
-        { platform: 'twitter', url: 'https://twitter.com/yourhub' },
-        { platform: 'linkedin', url: 'https://linkedin.com/company/yourhub' },
-        { platform: 'discord', url: 'https://discord.gg/yourhub' },
-        { platform: 'instagram', url: 'https://instagram.com/yourhub' },
+        { platform: 'linkedin', url: 'https://linkedin.com/company/wrocdevs' },
+        { platform: 'discord', url: 'https://discord.gg/wrocdevs' },
+        { platform: 'github', url: 'https://github.com/wrocdevs' },
       ],
       primaryCTA: {
         type: 'custom',
         appearance: 'default',
-        label: 'Join the Community',
-        url: '/register',
-        newTab: false,
+        label: 'Dołącz do Discorda',
+        url: 'https://discord.gg/wrocdevs',
+        newTab: true,
       },
     },
   ],
   meta: {
-    title: 'Your Community Hub - Meetups, Courses & Networking',
+    title: 'WrocDevs - Społeczność Developerów Wrocławia',
     description:
-      'Join our vibrant community for tech meetups, professional courses, and networking events. Learn, connect, and grow with us.',
+      'Dołącz do meetupów dla programistów z Wrocławia. Prezentacje, networking i wymiana wiedzy ze społecznością IT.',
   },
 }

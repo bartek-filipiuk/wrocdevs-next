@@ -517,6 +517,27 @@ export interface Event {
   price?: number | null;
   currency?: ('PLN' | 'EUR' | 'USD') | null;
   categories?: (number | Category)[] | null;
+  /**
+   * Dodaj punkty agendy wydarzenia w kolejności chronologicznej
+   */
+  agenda?:
+    | {
+        startTime: string;
+        title: string;
+        speaker?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add images to the event gallery
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     /**
@@ -2041,6 +2062,21 @@ export interface EventsSelect<T extends boolean = true> {
   price?: T;
   currency?: T;
   categories?: T;
+  agenda?:
+    | T
+    | {
+        startTime?: T;
+        title?: T;
+        speaker?: T;
+        description?: T;
+        id?: T;
+      };
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   meta?:
     | T
     | {

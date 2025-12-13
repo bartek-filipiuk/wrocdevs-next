@@ -1,9 +1,12 @@
+'use client'
+
 import React from 'react'
 
 import type { UpcomingEventsBlock as EventsProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
+import { ScrollReveal } from '@/components/ScrollReveal'
 
 export const UpcomingEventsBlock: React.FC<EventsProps> = ({
   sectionTitle,
@@ -24,18 +27,20 @@ export const UpcomingEventsBlock: React.FC<EventsProps> = ({
     <section className="py-20 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent">
       <div className="container">
         {(sectionTitle || sectionDescription) && (
-          <div className="text-center mb-16">
-            {sectionTitle && (
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-blue">
-                {sectionTitle}
-              </h2>
-            )}
-            {sectionDescription && (
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {sectionDescription}
-              </p>
-            )}
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-16">
+              {sectionTitle && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-blue">
+                  {sectionTitle}
+                </h2>
+              )}
+              {sectionDescription && (
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  {sectionDescription}
+                </p>
+              )}
+            </div>
+          </ScrollReveal>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -43,10 +48,8 @@ export const UpcomingEventsBlock: React.FC<EventsProps> = ({
             const dateInfo = event.date ? formatDate(event.date) : null
 
             return (
-              <div
-                key={index}
-                className="glass rounded-2xl overflow-hidden hover:glow-blue-sm transition-all duration-300 hover:-translate-y-1 group"
-              >
+              <ScrollReveal key={index} animation="fade-up" delay={index * 100}>
+                <div className="glass rounded-2xl overflow-hidden hover:glow-blue-sm transition-all duration-300 hover:-translate-y-1 group h-full">
                 {/* Image */}
                 {event.image && typeof event.image === 'object' && (
                   <div className="relative h-48 overflow-hidden">
@@ -101,18 +104,21 @@ export const UpcomingEventsBlock: React.FC<EventsProps> = ({
                   )}
                 </div>
               </div>
+              </ScrollReveal>
             )
           })}
         </div>
 
         {viewAllLink?.label && (
-          <div className="text-center mt-12">
-            <CMSLink
-              {...viewAllLink}
-              size="lg"
-              className="gradient-blue text-white hover:opacity-90 transition-opacity px-8 py-3 rounded-xl font-semibold shadow-lg inline-flex items-center gap-2"
-            />
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mt-12">
+              <CMSLink
+                {...viewAllLink}
+                size="lg"
+                className="gradient-blue text-white hover:opacity-90 transition-opacity px-8 py-3 rounded-xl font-semibold shadow-lg inline-flex items-center gap-2"
+              />
+            </div>
+          </ScrollReveal>
         )}
       </div>
     </section>

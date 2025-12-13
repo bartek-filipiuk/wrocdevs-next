@@ -33,6 +33,10 @@ const translations = {
     'events.capacity': 'Liczba miejsc',
     'events.maxParticipants': 'Maks. {count} uczestników',
     'events.registrationDeadline': 'Termin rejestracji',
+    'events.agenda': 'Agenda',
+    'events.speaker': 'Prowadzący',
+    'events.gallery': 'Galeria',
+    'events.noGalleryImages': 'Brak zdjęć w galerii.',
 
     // Courses
     'courses.title': 'Kursy',
@@ -120,6 +124,10 @@ const translations = {
     'events.capacity': 'Capacity',
     'events.maxParticipants': 'Max {count} participants',
     'events.registrationDeadline': 'Registration Deadline',
+    'events.agenda': 'Agenda',
+    'events.speaker': 'Speaker',
+    'events.gallery': 'Gallery',
+    'events.noGalleryImages': 'No gallery images available.',
 
     // Courses
     'courses.title': 'Courses',

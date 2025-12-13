@@ -29,3 +29,16 @@ export async function POST(): Promise<Response> {
     return new Response('Error seeding data.', { status: 500 })
   }
 }
+
+export async function GET(): Promise<Response> {
+  const payload = await getPayload({ config })
+
+  try {
+    const payloadReq = await createLocalReq({}, payload)
+    await seed({ payload, req: payloadReq })
+    return Response.json({ success: true })
+  } catch (e) {
+    payload.logger.error({ err: e, message: 'Error seeding data' })
+    return new Response('Error seeding data.', { status: 500 })
+  }
+}

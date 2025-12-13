@@ -15,10 +15,10 @@ export const Logo = (props: Props) => {
       className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
       viewBox="0 0 193 34"
       fill="currentColor"
-      aria-label="YourHub Logo"
+      aria-label="WrocDevs Logo"
     >
       <text x="0" y="26" fontSize="28" fontWeight="bold">
-        YourHub
+        WrocDevs
       </text>
     </svg>
   )

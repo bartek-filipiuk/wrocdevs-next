@@ -5,9 +5,11 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { notFound } from 'next/navigation'
 import { format } from 'date-fns'
+import { pl, enUS } from 'date-fns/locale'
 import { Calendar, MapPin, Users, ExternalLink, Clock } from 'lucide-react'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
+import { EventGallery } from '@/components/EventGallery'
 import { Button } from '@/components/ui/button'
 import { generateMeta } from '@/utilities/generateMeta'
 import { getLocale } from '@/utilities/getLocale'
@@ -58,12 +60,19 @@ export default async function EventPage({ params: paramsPromise }: Args) {
     price,
     currency,
     featuredImage,
+    agenda,
+    gallery,
   } = event
 
-  const formattedStartDate = startDate ? format(new Date(startDate), 'PPP p') : null
-  const formattedEndDate = endDate ? format(new Date(endDate), 'PPP p') : null
+  const dateLocale = locale === 'pl' ? pl : enUS
+  const formattedStartDate = startDate
+    ? format(new Date(startDate), 'PPP p', { locale: dateLocale })
+    : null
+  const formattedEndDate = endDate
+    ? format(new Date(endDate), 'PPP p', { locale: dateLocale })
+    : null
   const formattedDeadline = registrationDeadline
-    ? format(new Date(registrationDeadline), 'PPP p')
+    ? format(new Date(registrationDeadline), 'PPP p', { locale: dateLocale })
     : null
 
   return (
@@ -85,10 +94,12 @@ export default async function EventPage({ params: paramsPromise }: Args) {
           <div className="flex items-start gap-3">
             <Calendar className="w-5 h-5 mt-0.5 text-primary" />
             <div>
-              <p className="font-medium">Date & Time</p>
+              <p className="font-medium">{t(locale, 'events.dateTime')}</p>
               <p className="text-sm text-muted-foreground">{formattedStartDate}</p>
               {formattedEndDate && (
-                <p className="text-sm text-muted-foreground">to {formattedEndDate}</p>
+                <p className="text-sm text-muted-foreground">
+                  {locale === 'pl' ? 'do' : 'to'} {formattedEndDate}
+                </p>
               )}
             </div>
           </div>
@@ -101,9 +112,9 @@ export default async function EventPage({ params: paramsPromise }: Args) {
               <MapPin className="w-5 h-5 mt-0.5 text-primary" />
             )}
             <div>
-              <p className="font-medium">Location</p>
+              <p className="font-medium">{t(locale, 'events.location')}</p>
               {eventType === 'online' ? (
-                <p className="text-sm text-muted-foreground">Online Event</p>
+                <p className="text-sm text-muted-foreground">{t(locale, 'events.onlineEvent')}</p>
               ) : (
                 <>
                   {location?.address && (
@@ -124,8 +135,10 @@ export default async function EventPage({ params: paramsPromise }: Args) {
             <div className="flex items-start gap-3">
               <Users className="w-5 h-5 mt-0.5 text-primary" />
               <div>
-                <p className="font-medium">Capacity</p>
-                <p className="text-sm text-muted-foreground">Max {maxParticipants} participants</p>
+                <p className="font-medium">{t(locale, 'events.capacity')}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t(locale, 'events.maxParticipants', { count: maxParticipants })}
+                </p>
               </div>
             </div>
           )}
@@ -135,7 +148,7 @@ export default async function EventPage({ params: paramsPromise }: Args) {
             <div className="flex items-start gap-3">
               <Clock className="w-5 h-5 mt-0.5 text-primary" />
               <div>
-                <p className="font-medium">Registration Deadline</p>
+                <p className="font-medium">{t(locale, 'events.registrationDeadline')}</p>
                 <p className="text-sm text-muted-foreground">{formattedDeadline}</p>
               </div>
             </div>
@@ -151,13 +164,13 @@ export default async function EventPage({ params: paramsPromise }: Args) {
                 : 'bg-primary/10 text-primary'
             }`}
           >
-            {isFree ? 'Free Event' : `${price} ${currency}`}
+            {isFree ? t(locale, 'events.freeEvent') : `${price} ${currency}`}
           </span>
 
           {externalRegistrationUrl && (
             <Button asChild>
               <a href={externalRegistrationUrl} target="_blank" rel="noopener noreferrer">
-                Register Now
+                {t(locale, 'common.registerNow')}
               </a>
             </Button>
           )}
@@ -165,7 +178,7 @@ export default async function EventPage({ params: paramsPromise }: Args) {
           {meetingLink && eventType !== 'offline' && (
             <Button variant="outline" asChild>
               <a href={meetingLink} target="_blank" rel="noopener noreferrer">
-                Join Online
+                {t(locale, 'common.joinOnline')}
               </a>
             </Button>
           )}
@@ -174,10 +187,63 @@ export default async function EventPage({ params: paramsPromise }: Args) {
         {/* Description */}
         {description && (
           <div className="prose dark:prose-invert max-w-none">
-            <h2>About This Event</h2>
+            <h2>{t(locale, 'events.aboutEvent')}</h2>
             <RichText data={description} />
           </div>
         )}
+
+        {/* Agenda Section */}
+        {agenda && agenda.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-3xl font-bold mb-8 text-gradient-blue">{t(locale, 'events.agenda')}</h2>
+            <div className="glass rounded-2xl p-8 space-y-6">
+              {agenda.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex gap-6 items-start pb-6 border-b border-border/50 last:border-0 last:pb-0"
+                >
+                  {/* Time Badge */}
+                  <div className="flex-shrink-0 w-20 h-20 gradient-blue rounded-xl flex items-center justify-center text-white shadow-lg">
+                    <span className="text-lg font-bold">{item.startTime}</span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-xl md:text-2xl">{item.title}</h3>
+                    {item.speaker && (
+                      <p className="text-base text-muted-foreground flex items-center gap-2 mt-2">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
+                        {item.speaker}
+                      </p>
+                    )}
+                    {item.description && (
+                      <p className="text-base text-muted-foreground mt-3">{item.description}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Gallery Section */}
+        <EventGallery
+          images={gallery}
+          title={t(locale, 'events.gallery')}
+          emptyText={t(locale, 'events.noGalleryImages')}
+        />
       </div>
     </article>
   )

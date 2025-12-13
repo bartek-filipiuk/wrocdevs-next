@@ -2,6 +2,7 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
+import { firstEvent } from './first-event'
 import { home } from './home'
 import { hubHome } from './hub-home'
 import { image1 } from './image-1'
@@ -16,6 +17,7 @@ const collections: CollectionSlug[] = [
   'media',
   'pages',
   'posts',
+  'events',
   'forms',
   'form-submissions',
   'search',
@@ -193,6 +195,65 @@ export const seed = async ({
     },
   })
 
+  payload.logger.info(`— Seeding events...`)
+
+  const eventDoc = await payload.create({
+    collection: 'events',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: firstEvent,
+  })
+
+  // Add English translation for event
+  await payload.update({
+    collection: 'events',
+    id: eventDoc.id,
+    locale: 'en',
+    context: {
+      disableRevalidate: true,
+    },
+    data: {
+      title: 'Can AI be our junior developer?',
+      description: {
+        root: {
+          type: 'root',
+          children: [
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  type: 'text',
+                  detail: 0,
+                  format: 0,
+                  mode: 'normal',
+                  style: '',
+                  text: 'We invite you to a meetup dedicated to the use of artificial intelligence in everyday developer work. Together we will consider whether AI can act as a junior in a programming team, what its capabilities and limitations are, and how to effectively use AI tools in the software development process.',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              textFormat: 0,
+              version: 1,
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        },
+      },
+      meta: {
+        title: 'Can AI be our junior developer? - WrocDevs Meetup',
+        description:
+          'WrocDevs meetup about using AI in developer work. January 28, 2026, inQube Wrocław.',
+      },
+    },
+  })
+
   payload.logger.info(`— Seeding contact form...`)
 
   const contactForm = await payload.create({
@@ -203,7 +264,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [homePage, contactPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -219,6 +280,176 @@ export const seed = async ({
     }),
   ])
 
+  // Add English translation for homepage
+  await payload.update({
+    collection: 'pages',
+    id: homePage.id,
+    locale: 'en',
+    context: {
+      disableRevalidate: true,
+    },
+    data: {
+      title: 'WrocDevs - Home',
+      layout: [
+        // GlassHero Block
+        {
+          blockType: 'glassHero',
+          blockName: 'Hero Section',
+          headline: 'WrocDevs - Wrocław Developer Community',
+          subheadline: {
+            root: {
+              type: 'root',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      detail: 0,
+                      format: 0,
+                      mode: 'normal',
+                      style: '',
+                      text: 'Join our meetups, meet people from the IT world and grow together with us. Presentations, networking and knowledge sharing for developers from Wrocław.',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  textFormat: 0,
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              version: 1,
+            },
+          },
+          primaryCTA: {
+            type: 'custom',
+            appearance: 'default',
+            label: 'Upcoming Events',
+            url: '/events',
+            newTab: false,
+          },
+          secondaryCTA: {
+            type: 'custom',
+            appearance: 'outline',
+            label: 'Join Us',
+            url: '/contact',
+            newTab: false,
+          },
+        },
+        // Upcoming Events Block
+        {
+          blockType: 'upcomingEvents',
+          blockName: 'Upcoming Events',
+          sectionTitle: 'Upcoming Events',
+          sectionDescription: "Don't miss the upcoming meetups! Reserve your spot today.",
+          events: [
+            {
+              title: 'Can AI be our junior developer?',
+              description:
+                'A meetup about using AI in everyday developer work. Can artificial intelligence replace a junior on the team?',
+              date: '2026-01-28T18:00:00.000Z',
+              location: 'inQube Wrocław, ul. Wielka 67',
+              link: {
+                type: 'custom',
+                label: 'Register',
+                url: '/events/czy-ai-moze-byc-naszym-juniorem',
+                newTab: false,
+              },
+            },
+          ],
+          viewAllLink: {
+            type: 'custom',
+            label: 'All Events',
+            url: '/events',
+            newTab: false,
+          },
+        },
+        // Testimonials Block
+        {
+          blockType: 'testimonials',
+          blockName: 'Testimonials',
+          sectionTitle: 'What People Say About Us',
+          sectionDescription: 'Read what our meetup participants have to say.',
+          testimonials: [
+            {
+              quote:
+                'WrocDevs is a great opportunity to meet people from the industry. Every meetup brings new contacts and interesting conversations.',
+              author: 'Meetup Participant',
+              role: 'Software Developer',
+              rating: 5,
+            },
+            {
+              quote:
+                'High-quality presentations and an atmosphere that always encourages networking. I recommend it to every developer from Wrocław!',
+              author: 'Meetup Participant',
+              role: 'Tech Lead',
+              rating: 5,
+            },
+          ],
+        },
+        // Contact CTA Block
+        {
+          blockType: 'contactCTA',
+          blockName: 'Join Us',
+          headline: 'Join the WrocDevs Community!',
+          description: {
+            root: {
+              type: 'root',
+              children: [
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      detail: 0,
+                      format: 0,
+                      mode: 'normal',
+                      style: '',
+                      text: 'Stay up to date with upcoming events. Follow us on social media and don\'t miss any meetup.',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  textFormat: 0,
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              version: 1,
+            },
+          },
+          contactEmail: 'kontakt@wrocdevs.pl',
+          socialLinks: [
+            { platform: 'linkedin', url: 'https://linkedin.com/company/wrocdevs' },
+            { platform: 'discord', url: 'https://discord.gg/wrocdevs' },
+            { platform: 'github', url: 'https://github.com/wrocdevs' },
+          ],
+          primaryCTA: {
+            type: 'custom',
+            appearance: 'default',
+            label: 'Join Discord',
+            url: 'https://discord.gg/wrocdevs',
+            newTab: true,
+          },
+        },
+      ],
+      meta: {
+        title: 'WrocDevs - Wrocław Developer Community',
+        description:
+          'Join meetups for developers from Wrocław. Presentations, networking and knowledge sharing with the IT community.',
+      },
+    },
+  })
+
   payload.logger.info(`— Seeding globals...`)
 
   await Promise.all([
@@ -229,28 +460,14 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Events',
+              label: 'Wydarzenia',
               url: '/events',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Courses',
-              url: '/courses',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Workshops',
-              url: '/workshops',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Contact',
+              label: 'Kontakt',
               url: '/contact',
             },
           },
@@ -264,28 +481,14 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Events',
+              label: 'Wydarzenia',
               url: '/events',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Courses',
-              url: '/courses',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Workshops',
-              url: '/workshops',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Contact',
+              label: 'Kontakt',
               url: '/contact',
             },
           },

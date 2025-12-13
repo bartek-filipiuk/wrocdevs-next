@@ -27,6 +27,8 @@ export const Events: CollectionConfig<'events'> = {
     slug: true,
     startDate: true,
     featuredImage: true,
+    agenda: true,
+    gallery: true,
   },
   admin: {
     defaultColumns: ['title', 'startDate', 'eventType', 'isFree', 'updatedAt'],
@@ -235,6 +237,91 @@ export const Events: CollectionConfig<'events'> = {
               relationTo: 'categories',
               hasMany: true,
               label: 'Event Categories',
+            },
+          ],
+        },
+        {
+          label: 'Agenda',
+          fields: [
+            {
+              name: 'agenda',
+              type: 'array',
+              label: 'Agenda wydarzenia',
+              labels: {
+                singular: 'Punkt agendy',
+                plural: 'Punkty agendy',
+              },
+              admin: {
+                description: 'Dodaj punkty agendy wydarzenia w kolejności chronologicznej',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'startTime',
+                      type: 'text',
+                      required: true,
+                      label: 'Godzina',
+                      admin: {
+                        width: '20%',
+                        placeholder: '18:00',
+                      },
+                    },
+                    {
+                      name: 'title',
+                      type: 'text',
+                      required: true,
+                      label: 'Tytuł punktu',
+                      admin: {
+                        width: '50%',
+                      },
+                    },
+                    {
+                      name: 'speaker',
+                      type: 'text',
+                      label: 'Prowadzący/Prelegent',
+                      admin: {
+                        width: '30%',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                  label: 'Opis (opcjonalny)',
+                  admin: {
+                    rows: 2,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Gallery',
+          fields: [
+            {
+              name: 'gallery',
+              type: 'array',
+              label: 'Event Gallery',
+              labels: {
+                singular: 'Image',
+                plural: 'Images',
+              },
+              admin: {
+                description: 'Add images to the event gallery',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Image',
+                },
+              ],
             },
           ],
         },

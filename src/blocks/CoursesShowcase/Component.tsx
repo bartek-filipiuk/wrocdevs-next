@@ -1,9 +1,12 @@
+'use client'
+
 import React from 'react'
 
 import type { CoursesShowcaseBlock as CoursesProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
+import { ScrollReveal } from '@/components/ScrollReveal'
 
 const levelColors: Record<string, string> = {
   beginner: 'bg-green-500/20 text-green-700',
@@ -26,26 +29,26 @@ export const CoursesShowcaseBlock: React.FC<CoursesProps> = ({
 
       <div className="container">
         {(sectionTitle || sectionDescription) && (
-          <div className="text-center mb-16">
-            {sectionTitle && (
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-blue">
-                {sectionTitle}
-              </h2>
-            )}
-            {sectionDescription && (
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {sectionDescription}
-              </p>
-            )}
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-16">
+              {sectionTitle && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-blue">
+                  {sectionTitle}
+                </h2>
+              )}
+              {sectionDescription && (
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  {sectionDescription}
+                </p>
+              )}
+            </div>
+          </ScrollReveal>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses?.map((course, index) => (
-            <div
-              key={index}
-              className="glass rounded-2xl overflow-hidden hover:glow-blue-sm transition-all duration-300 hover:-translate-y-2 group"
-            >
+            <ScrollReveal key={index} animation="fade-up" delay={index * 100}>
+              <div className="glass rounded-2xl overflow-hidden hover:glow-blue-sm transition-all duration-300 hover:-translate-y-2 group h-full">
               {/* Image with overlay */}
               {course.image && typeof course.image === 'object' && (
                 <div className="relative h-52 overflow-hidden">
@@ -98,17 +101,20 @@ export const CoursesShowcaseBlock: React.FC<CoursesProps> = ({
                 )}
               </div>
             </div>
+            </ScrollReveal>
           ))}
         </div>
 
         {viewAllLink?.label && (
-          <div className="text-center mt-12">
-            <CMSLink
-              {...viewAllLink}
-              size="lg"
-              className="glass border-primary/30 hover:bg-primary/10 transition-colors px-8 py-3 rounded-xl font-semibold inline-flex items-center gap-2"
-            />
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mt-12">
+              <CMSLink
+                {...viewAllLink}
+                size="lg"
+                className="glass border-primary/30 hover:bg-primary/10 transition-colors px-8 py-3 rounded-xl font-semibold inline-flex items-center gap-2"
+              />
+            </div>
+          </ScrollReveal>
         )}
       </div>
     </section>

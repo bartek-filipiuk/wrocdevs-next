@@ -50,29 +50,29 @@ export const EventCard: React.FC<EventCardProps> = ({ event, className, locale =
       )}
 
       {/* Content */}
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+      <div className="p-6">
+        <h3 className="font-semibold text-xl md:text-2xl mb-3 group-hover:text-primary transition-colors line-clamp-2">
           {title}
         </h3>
 
         {/* Date */}
         {formattedDate && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-            <Calendar className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-base text-muted-foreground mb-3">
+            <Calendar className="w-5 h-5" />
             {formattedDate}
           </div>
         )}
 
         {/* Location/Type */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+        <div className="flex items-center gap-2 text-base text-muted-foreground mb-3">
           {eventType === 'online' ? (
             <>
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-5 h-5" />
               {t(locale, 'events.onlineEvent')}
             </>
           ) : (
             <>
-              <MapPin className="w-4 h-4" />
+              <MapPin className="w-5 h-5" />
               {location?.city || t(locale, 'events.location')}
             </>
           )}
@@ -80,8 +80,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event, className, locale =
 
         {/* Max Participants */}
         {maxParticipants && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-            <Users className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-base text-muted-foreground mb-4">
+            <Users className="w-5 h-5" />
             {t(locale, 'events.maxParticipants', { count: maxParticipants })}
           </div>
         )}
@@ -90,13 +90,13 @@ export const EventCard: React.FC<EventCardProps> = ({ event, className, locale =
         <div className="flex items-center justify-between">
           <span
             className={cn(
-              'text-sm font-medium px-2 py-1 rounded',
+              'text-base font-medium px-3 py-1.5 rounded',
               isFree ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-primary/10 text-primary',
             )}
           >
             {isFree ? t(locale, 'common.free') : `${price} ${currency}`}
           </span>
-          <span className="text-xs text-muted-foreground capitalize">{eventType}</span>
+          <span className="text-sm text-muted-foreground capitalize">{eventType}</span>
         </div>
       </div>
     </Link>

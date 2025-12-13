@@ -56,5 +56,9 @@ ehthumbs.db
 .cache/
 .eslintcache
 
+# Backups
+backups/
+*.sql
+
 # Misc
 *.pem

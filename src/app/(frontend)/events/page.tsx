@@ -29,16 +29,16 @@ export default async function EventsPage() {
 
   return (
     <div className="pt-24 pb-24">
-      <div className="container mb-12">
-        <h1 className="text-4xl font-bold mb-4">{t(locale, 'events.title')}</h1>
-        <p className="text-lg text-muted-foreground">
+      <div className="container mb-16">
+        <h1 className="text-5xl font-bold mb-6">{t(locale, 'events.title')}</h1>
+        <p className="text-xl text-muted-foreground">
           {t(locale, 'events.description')}
         </p>
       </div>
 
       <div className="container">
         {events.docs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.docs.map((event) => (
               <EventCard key={event.id} event={event} locale={locale} />
             ))}

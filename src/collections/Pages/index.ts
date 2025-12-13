@@ -93,6 +93,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
               ],
               required: true,
+              localized: true,
               admin: {
                 initCollapsed: true,
               },

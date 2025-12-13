@@ -90,6 +90,10 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  }
+  code, pre, kbd, samp {
+    font-family: var(--font-mono), ui-monospace, monospace;
   }
 }
 
@@ -250,5 +254,202 @@ html[data-theme='light'] {
     50% {
       transform: translateY(-20px);
     }
+  }
+
+  /* WOW Effect Animations */
+
+  /* Gentle floating for geometric shapes */
+  .animate-float-gentle {
+    animation: float-gentle 8s ease-in-out infinite;
+  }
+
+  @keyframes float-gentle {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-15px) rotate(3deg);
+    }
+    50% {
+      transform: translateY(-25px) rotate(-2deg);
+    }
+    75% {
+      transform: translateY(-10px) rotate(2deg);
+    }
+  }
+
+  /* Breathing glow orbs */
+  .animate-glow-breathe {
+    animation: glow-breathe 6s ease-in-out infinite;
+  }
+
+  @keyframes glow-breathe {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.3;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.5;
+    }
+  }
+
+  /* Twinkling stars */
+  .animate-twinkle {
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.2;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.2);
+    }
+  }
+
+  /* Glass card entrance */
+  .animate-fade-up {
+    animation: fade-up 0.8s ease-out forwards;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Pulsating glow on glass card */
+  .animate-glow-pulse {
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2), 0 0 60px rgba(59, 130, 246, 0.1);
+    }
+    50% {
+      box-shadow: 0 8px 48px rgba(59, 130, 246, 0.4), 0 0 100px rgba(59, 130, 246, 0.2);
+    }
+  }
+
+  [data-theme='dark'] .animate-glow-pulse,
+  .dark .animate-glow-pulse {
+    animation: glow-pulse-dark 4s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse-dark {
+    0%, 100% {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 60px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6), 0 0 100px rgba(59, 130, 246, 0.3);
+    }
+  }
+
+  /* Rotating gradient border effect */
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      var(--angle, 0deg),
+      rgba(59, 130, 246, 0.5),
+      rgba(147, 51, 234, 0.5),
+      rgba(6, 182, 212, 0.5),
+      rgba(59, 130, 246, 0.5)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-rotate 8s linear infinite;
+  }
+
+  @keyframes border-rotate {
+    to {
+      --angle: 360deg;
+    }
+  }
+
+  /* Support for CSS custom properties animation */
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float-gentle,
+    .animate-glow-breathe,
+    .animate-twinkle,
+    .animate-fade-up,
+    .animate-glow-pulse,
+    .animate-float,
+    .animate-blob {
+      animation: none !important;
+    }
+
+    .gradient-border::before {
+      animation: none !important;
+    }
+  }
+}
+
+/* Scroll Reveal Animations */
+@layer components {
+  .scroll-reveal {
+    opacity: 0;
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translate(0, 0) scale(1) !important;
+  }
+
+  /* Fade Up - Default */
+  .scroll-reveal[data-animation='fade-up'] {
+    transform: translateY(40px);
+  }
+
+  /* Fade Down */
+  .scroll-reveal[data-animation='fade-down'] {
+    transform: translateY(-40px);
+  }
+
+  /* Fade Left (slides in from right) */
+  .scroll-reveal[data-animation='fade-left'] {
+    transform: translateX(40px);
+  }
+
+  /* Fade Right (slides in from left) */
+  .scroll-reveal[data-animation='fade-right'] {
+    transform: translateX(-40px);
+  }
+
+  /* Simple Fade */
+  .scroll-reveal[data-animation='fade'] {
+    transform: none;
+  }
+
+  /* Scale Up */
+  .scroll-reveal[data-animation='scale-up'] {
+    transform: scale(0.9);
   }
 }

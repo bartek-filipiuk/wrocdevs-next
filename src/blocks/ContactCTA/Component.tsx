@@ -1,9 +1,12 @@
+'use client'
+
 import React from 'react'
 
 import type { ContactCTABlock as ContactCTAProps } from '@/payload-types'
 
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
+import { ScrollReveal } from '@/components/ScrollReveal'
 
 const socialIcons: Record<string, React.ReactNode> = {
   twitter: (
@@ -61,7 +64,8 @@ export const ContactCTABlock: React.FC<ContactCTAProps> = ({
       </div>
 
       <div className="container relative z-10">
-        <div className="glass-dark rounded-3xl p-8 md:p-12 lg:p-16 max-w-4xl mx-auto text-center">
+        <ScrollReveal animation="fade-up">
+          <div className="glass-dark rounded-3xl p-8 md:p-12 lg:p-16 max-w-4xl mx-auto text-center">
           {headline && (
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white">
               {headline}
@@ -128,6 +132,7 @@ export const ContactCTABlock: React.FC<ContactCTAProps> = ({
             />
           )}
         </div>
+        </ScrollReveal>
       </div>
     </section>
   )

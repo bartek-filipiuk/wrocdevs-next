@@ -1,8 +1,11 @@
+'use client'
+
 import React from 'react'
 
 import type { FeaturesBlock as FeaturesProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
+import { ScrollReveal } from '@/components/ScrollReveal'
 
 const iconMap: Record<string, React.ReactNode> = {
   calendar: (
@@ -62,49 +65,50 @@ export const FeaturesBlock: React.FC<FeaturesProps> = ({
 
       <div className="container">
         {(sectionTitle || sectionDescription) && (
-          <div className="text-center mb-16">
-            {sectionTitle && (
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-blue">
-                {sectionTitle}
-              </h2>
-            )}
-            {sectionDescription && (
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {sectionDescription}
-              </p>
-            )}
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-16">
+              {sectionTitle && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-blue">
+                  {sectionTitle}
+                </h2>
+              )}
+              {sectionDescription && (
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  {sectionDescription}
+                </p>
+              )}
+            </div>
+          </ScrollReveal>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features?.map((feature, index) => (
-            <div
-              key={index}
-              className="glass rounded-2xl p-6 hover:glow-blue-sm transition-all duration-300 hover:-translate-y-1 group"
-            >
-              <div className="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
-                {feature.icon && iconMap[feature.icon]}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground mb-4">{feature.description}</p>
-              {feature.link?.label && (
-                <CMSLink
-                  {...feature.link}
-                  appearance="inline"
-                  className="text-primary hover:text-accent font-medium inline-flex items-center gap-1 group/link"
-                >
-                  {feature.link.label}
-                  <svg
-                    className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+            <ScrollReveal key={index} animation="fade-up" delay={index * 100}>
+              <div className="glass rounded-2xl p-6 hover:glow-blue-sm transition-all duration-300 hover:-translate-y-1 group h-full">
+                <div className="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
+                  {feature.icon && iconMap[feature.icon]}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground mb-4">{feature.description}</p>
+                {feature.link?.label && (
+                  <CMSLink
+                    {...feature.link}
+                    appearance="inline"
+                    className="text-primary hover:text-accent font-medium inline-flex items-center gap-1 group/link"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </CMSLink>
-              )}
-            </div>
+                    {feature.link.label}
+                    <svg
+                      className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </CMSLink>
+                )}
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
