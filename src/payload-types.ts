@@ -232,6 +232,7 @@ export interface Page {
     | MediaBlock
     | ArchiveBlock
     | FormBlock
+    | EmbedBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1400,6 +1401,33 @@ export interface FormBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EmbedBlock".
+ */
+export interface EmbedBlock {
+  /**
+   * Main heading for this section (e.g., "Zapisz się na wydarzenie")
+   */
+  headline?: string | null;
+  /**
+   * Supporting text below the headline
+   */
+  description?: string | null;
+  /**
+   * URL of the embed (e.g., Luma event, YouTube video)
+   */
+  embedUrl: string;
+  /**
+   * Descriptive title for screen readers
+   */
+  title?: string | null;
+  width?: number | null;
+  height?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'embed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1724,6 +1752,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        embed?: T | EmbedBlockSelect<T>;
       };
   meta?:
     | T
@@ -2002,6 +2031,20 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EmbedBlock_select".
+ */
+export interface EmbedBlockSelect<T extends boolean = true> {
+  headline?: T;
+  description?: T;
+  embedUrl?: T;
+  title?: T;
+  width?: T;
+  height?: T;
   id?: T;
   blockName?: T;
 }

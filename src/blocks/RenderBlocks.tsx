@@ -13,6 +13,7 @@ import { UpcomingEventsBlock } from '@/blocks/UpcomingEvents/Component'
 import { CoursesShowcaseBlock } from '@/blocks/CoursesShowcase/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 import { ContactCTABlock } from '@/blocks/ContactCTA/Component'
+import { EmbedBlock } from '@/blocks/EmbedBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -26,6 +27,7 @@ const blockComponents = {
   coursesShowcase: CoursesShowcaseBlock,
   testimonials: TestimonialsBlock,
   contactCTA: ContactCTABlock,
+  embed: EmbedBlock,
 }
 
 export const RenderBlocks: React.FC<{
