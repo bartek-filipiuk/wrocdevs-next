@@ -1,17 +1,15 @@
-version: '3.8'
-
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: wrocdevs-app:latest
     container_name: wrocdevs-app
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3000"
     environment:
       - NODE_ENV=production
       - DATABASE_URI=postgresql://postgres:${DB_PASSWORD}@postgres:5432/payload
       - PAYLOAD_SECRET=${PAYLOAD_SECRET}
-      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-https://wrocdevs.com}
+      - NEXT_PUBLIC_SERVER_URL=https://wrocdevs.com
       - CRON_SECRET=${CRON_SECRET}
       - PREVIEW_SECRET=${PREVIEW_SECRET}
     depends_on:
@@ -32,12 +30,14 @@ services:
     image: postgres:16-alpine
     container_name: wrocdevs-db
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:5433:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=payload
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - wrocdevs_postgres_data:/var/lib/postgresql/data
     networks:
       - wrocdevs-network
     healthcheck:
@@ -46,33 +46,12 @@ services:
       timeout: 5s
       retries: 5
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: wrocdevs-caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    networks:
-      - wrocdevs-network
-    depends_on:
-      - app
-
 networks:
   wrocdevs-network:
     driver: bridge
 
 volumes:
-  postgres_data:
+  wrocdevs_postgres_data:
     driver: local
   media_data:
-    driver: local
-  caddy_data:
-    driver: local
-  caddy_config:
     driver: local
