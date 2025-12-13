@@ -48,27 +48,27 @@ jobs:
             echo "=== Building and starting containers ==="
             if [ "${{ github.event.inputs.skip_build }}" = "true" ]; then
               echo "Skipping build, just restarting..."
-              docker compose -f docker-compose.prod.yml restart app
+              sg docker -c "docker compose -f docker-compose.prod.yml restart app"
             else
               echo "Building Docker image with Payload CMS support..."
-              DOCKER_BUILDKIT=1 docker build \
+              sg docker -c "DOCKER_BUILDKIT=1 docker build \
                 --network=host \
-                --build-arg DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
-                --build-arg PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
-                -t wrocdevs-app:latest .
+                --build-arg DATABASE_URI=\"postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload\" \
+                --build-arg PAYLOAD_SECRET=\"${PAYLOAD_SECRET}\" \
+                -t wrocdevs-app:latest ."
 
               echo "Restarting app container..."
-              docker compose -f docker-compose.prod.yml up -d --force-recreate app
+              sg docker -c "docker compose -f docker-compose.prod.yml up -d --force-recreate app"
             fi
 
             echo "=== Waiting for app to be healthy ==="
             sleep 10
 
             echo "=== Cleaning up old images ==="
-            docker image prune -f
+            sg docker -c "docker image prune -f"
 
             echo "=== Deployment completed ==="
-            docker compose -f docker-compose.prod.yml ps
+            sg docker -c "docker compose -f docker-compose.prod.yml ps"
 
       - name: Health Check
         uses: appleboy/ssh-action@v1.0.3
@@ -88,7 +88,7 @@ jobs:
               sleep 5
             done
             echo "Health check failed!"
-            docker compose -f /var/www/wrocdevs.com/docker-compose.prod.yml logs --tail=50 app
+            sg docker -c "docker compose -f /var/www/wrocdevs.com/docker-compose.prod.yml logs --tail=50 app"
             exit 1
 
   notify:
