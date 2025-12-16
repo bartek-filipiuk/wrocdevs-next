@@ -100,7 +100,7 @@ jobs:
             source .env
 
             echo "=== Installing dependencies ==="
-            pnpm install --frozen-lockfile
+            CI=true pnpm install --frozen-lockfile
 
             echo "=== Running database migrations ==="
             DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
