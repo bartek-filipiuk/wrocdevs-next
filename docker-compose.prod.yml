@@ -1,6 +1,6 @@
 services:
   app:
-    image: wrocdevs-app:latest
+    image: ghcr.io/bartek-filipiuk/wrocdevs-next:latest
     container_name: wrocdevs-app
     restart: unless-stopped
     ports:
