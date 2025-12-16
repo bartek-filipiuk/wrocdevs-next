@@ -14,6 +14,7 @@ import { CoursesShowcase } from '../../blocks/CoursesShowcase/config'
 import { Testimonials } from '../../blocks/Testimonials/config'
 import { ContactCTA } from '../../blocks/ContactCTA/config'
 import { EmbedBlock } from '../../blocks/EmbedBlock/config'
+import { PartnerLogos } from '../../blocks/PartnerLogos/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -86,6 +87,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 UpcomingEvents,
                 CoursesShowcase,
                 Testimonials,
+                PartnerLogos,
                 ContactCTA,
                 CallToAction,
                 Content,

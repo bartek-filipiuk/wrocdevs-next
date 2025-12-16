@@ -226,6 +226,7 @@ export interface Page {
     | UpcomingEventsBlock
     | CoursesShowcaseBlock
     | TestimonialsBlock
+    | PartnerLogosBlock
     | ContactCTABlock
     | CallToActionBlock
     | ContentBlock
@@ -966,6 +967,30 @@ export interface TestimonialsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnerLogosBlock".
+ */
+export interface PartnerLogosBlock {
+  sectionTitle?: string | null;
+  sectionDescription?: string | null;
+  logos?:
+    | {
+        /**
+         * Square format recommended (~200x200px). Transparent PNG works best.
+         */
+        logo: number | Media;
+        /**
+         * Used for accessibility (alt text)
+         */
+        partnerName: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'partnerLogos';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1746,6 +1771,7 @@ export interface PagesSelect<T extends boolean = true> {
         upcomingEvents?: T | UpcomingEventsBlockSelect<T>;
         coursesShowcase?: T | CoursesShowcaseBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
+        partnerLogos?: T | PartnerLogosBlockSelect<T>;
         contactCTA?: T | ContactCTABlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
@@ -1915,6 +1941,23 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
         role?: T;
         avatar?: T;
         rating?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnerLogosBlock_select".
+ */
+export interface PartnerLogosBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  sectionDescription?: T;
+  logos?:
+    | T
+    | {
+        logo?: T;
+        partnerName?: T;
         id?: T;
       };
   id?: T;
