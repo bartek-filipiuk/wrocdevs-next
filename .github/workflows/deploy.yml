@@ -58,8 +58,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          network: host
           build-args: |
-            DATABASE_URI=postgresql://postgres:postgres@172.17.0.1:5432/payload
+            DATABASE_URI=postgresql://postgres:postgres@localhost:5432/payload
             PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}
             NEXT_PUBLIC_SERVER_URL=https://wrocdevs.com
 
