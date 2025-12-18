@@ -97,19 +97,19 @@ jobs:
             git reset --hard origin/main
 
             echo "=== Loading environment ==="
+            set -a
             source .env
+            set +a
 
             echo "=== Installing dependencies ==="
             CI=true pnpm install --frozen-lockfile
 
             echo "=== Running database migrations ==="
-            DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
-            PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
+            export DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload"
+            export PAYLOAD_SECRET="${PAYLOAD_SECRET}"
             echo "y" | pnpm payload migrate
 
             echo "=== Checking migration status ==="
-            DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
-            PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
             pnpm payload migrate:status || true
 
             echo "=== Logging into GHCR ==="
