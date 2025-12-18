@@ -105,7 +105,12 @@ jobs:
             echo "=== Running database migrations ==="
             DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
             PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
-            yes | pnpm payload migrate || true
+            echo "y" | pnpm payload migrate
+
+            echo "=== Checking migration status ==="
+            DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload" \
+            PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
+            pnpm payload migrate:status || true
 
             echo "=== Logging into GHCR ==="
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
