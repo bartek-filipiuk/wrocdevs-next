@@ -114,7 +114,7 @@ jobs:
             export DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload"
             export PAYLOAD_SECRET="${PAYLOAD_SECRET}"
             pnpm payload migrate:status
-            pnpm payload migrate || {
+            yes | pnpm payload migrate || {
               echo "Migration failed! Restoring from backup..."
               docker exec -i -e PGPASSWORD="${DB_PASSWORD}" wrocdevs-db psql -U postgres -d payload < "$BACKUP_FILE"
               echo "Backup restored. Exiting with error."
