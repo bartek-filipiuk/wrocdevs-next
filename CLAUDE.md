@@ -77,11 +77,55 @@ Pages are built from modular blocks. Each block has:
 2. Create `src/blocks/MyBlock/Component.tsx` with React component
 3. Add block to `src/collections/Pages/index.ts` blocks array
 4. Run `pnpm generate:types`
+5. Run `pnpm payload migrate:create` to create migration
+6. Run `pnpm payload migrate` to apply locally
 
 ### New Collection
 1. Create `src/collections/MyCollection.ts`
 2. Add to `collections` array in `src/payload.config.ts`
 3. Run `pnpm generate:types`
+4. Run `pnpm payload migrate:create` to create migration
+5. Run `pnpm payload migrate` to apply locally
+
+## Database Migrations
+
+**Important**: Push mode is disabled (`push: false`). Schema changes require explicit migrations.
+
+### Migration Workflow
+
+After ANY schema change (new field, collection, block):
+
+```bash
+# 1. Make code changes to collection/block configs
+# 2. Generate types
+pnpm generate:types
+
+# 3. Create migration file
+pnpm payload migrate:create
+
+# 4. Review migration in src/migrations/
+# 5. Apply migration locally
+pnpm payload migrate
+
+# 6. Commit BOTH code changes AND migration file
+git add . && git commit -m "feat: add X with migration"
+```
+
+### Migration Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm payload migrate:create` | Generate migration from schema diff |
+| `pnpm payload migrate` | Apply pending migrations |
+| `pnpm payload migrate:status` | Check which migrations are applied |
+| `pnpm payload migrate:down` | Rollback last migration |
+| `pnpm payload migrate:fresh` | Drop all and re-run (DEV ONLY, loses data) |
+
+### Troubleshooting
+
+**"relation already exists" error**: Schema was pushed before migration was created. Check if production schema matches and mark migration as applied in `payload_migrations` table.
+
+**Migration prompts in CI**: Should not happen with `push: false`. If it does, check that all schema changes have corresponding migrations.
 
 ### Seed Data
 Create seed scripts in `src/endpoints/seed/` following `hub-home.ts` pattern. See `/docs/page-creation-guide.md` for block field specifications.

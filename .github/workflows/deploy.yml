@@ -104,13 +104,28 @@ jobs:
             echo "=== Installing dependencies ==="
             CI=true pnpm install --frozen-lockfile
 
+            echo "=== Backing up database before migration ==="
+            BACKUP_FILE="/var/www/wrocdevs.com/backups/pre_deploy_$(date +%Y%m%d_%H%M%S).sql"
+            mkdir -p /var/www/wrocdevs.com/backups
+            PGPASSWORD="${DB_PASSWORD}" pg_dump -h 127.0.0.1 -p 5433 -U postgres payload > "$BACKUP_FILE"
+            echo "Backup created: $BACKUP_FILE"
+
             echo "=== Running database migrations ==="
             export DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload"
             export PAYLOAD_SECRET="${PAYLOAD_SECRET}"
-            echo "y" | pnpm payload migrate
+            pnpm payload migrate:status
+            pnpm payload migrate || {
+              echo "Migration failed! Restoring from backup..."
+              PGPASSWORD="${DB_PASSWORD}" psql -h 127.0.0.1 -p 5433 -U postgres -d payload < "$BACKUP_FILE"
+              echo "Backup restored. Exiting with error."
+              exit 1
+            }
 
-            echo "=== Checking migration status ==="
-            pnpm payload migrate:status || true
+            echo "=== Migration completed successfully ==="
+            pnpm payload migrate:status
+
+            echo "=== Cleaning old backups (keep last 5) ==="
+            ls -t /var/www/wrocdevs.com/backups/*.sql 2>/dev/null | tail -n +6 | xargs -r rm || true
 
             echo "=== Logging into GHCR ==="
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
