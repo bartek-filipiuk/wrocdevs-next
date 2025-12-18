@@ -113,9 +113,21 @@ jobs:
             echo "=== Running database migrations ==="
             export DATABASE_URI="postgresql://postgres:${DB_PASSWORD}@127.0.0.1:5433/payload"
             export PAYLOAD_SECRET="${PAYLOAD_SECRET}"
+
+            echo "Migration status before:"
             pnpm payload migrate:status
-            yes | pnpm payload migrate || {
-              echo "Migration failed! Restoring from backup..."
+
+            # Run migrations WITHOUT yes pipe - if it hangs, we need to fix migrations properly
+            # Using timeout to prevent infinite hangs
+            timeout 120 pnpm payload migrate 2>&1 || {
+              EXIT_CODE=$?
+              if [ $EXIT_CODE -eq 124 ]; then
+                echo "ERROR: Migration timed out (likely waiting for user input)"
+                echo "This means migrations are not in sync. Fix locally first."
+              else
+                echo "Migration failed with exit code $EXIT_CODE"
+              fi
+              echo "Restoring from backup..."
               docker exec -i -e PGPASSWORD="${DB_PASSWORD}" wrocdevs-db psql -U postgres -d payload < "$BACKUP_FILE"
               echo "Backup restored. Exiting with error."
               exit 1
