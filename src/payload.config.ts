@@ -79,6 +79,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    push: false, // Disable auto-push, use migrations only to keep dev/prod in sync
   }),
   collections: [Pages, Posts, Events, Courses, Workshops, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
