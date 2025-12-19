@@ -127,6 +127,35 @@ git add . && git commit -m "feat: add X with migration"
 
 **Migration prompts in CI**: Should not happen with `push: false`. If it does, check that all schema changes have corresponding migrations.
 
+### Push Mode Configuration
+
+Push mode is configured dynamically in `payload.config.ts`:
+```typescript
+push: process.env.NODE_ENV !== 'production'
+```
+
+- **Local dev (`NODE_ENV=development`)**: `push: true` - Fast iteration, auto-syncs schema
+- **Production (`NODE_ENV=production`)**: `push: false` - Only migrations, no auto-sync
+
+### CRITICAL: Never Connect Dev to Production Database
+
+If you accidentally run dev mode against production, it creates `batch = -1` entries in `payload_migrations` table, causing migration failures.
+
+**If you see this error:**
+> "It looks like you've run Payload in dev mode..."
+
+**Fix:** SSH to server and delete dev mode entries:
+```bash
+docker exec -it wrocdevs-db psql -U postgres payload
+DELETE FROM payload_migrations WHERE batch = -1;
+\q
+```
+
+**Prevention:**
+- NEVER set local DATABASE_URI to production
+- ALWAYS use separate local PostgreSQL for development
+- Create migrations with `pnpm payload migrate:create` before pushing code
+
 ### Seed Data
 Create seed scripts in `src/endpoints/seed/` following `hub-home.ts` pattern. See `/docs/page-creation-guide.md` for block field specifications.
 
