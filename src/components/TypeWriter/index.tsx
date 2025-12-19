@@ -21,11 +21,17 @@ export const TypeWriter: React.FC<TypeWriterProps> = ({
   className = '',
   onComplete,
 }) => {
+  const [mounted, setMounted] = useState(false)
   const [displayedText, setDisplayedText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [showCursor, setShowCursor] = useState(true)
   const indexRef = useRef(0)
   const hasStartedRef = useRef(false)
+
+  // Mount check to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     // Reset when text changes
@@ -68,6 +74,21 @@ export const TypeWriter: React.FC<TypeWriterProps> = ({
 
     return () => clearInterval(blinkInterval)
   }, [cursor])
+
+  // On server, render empty to match initial client state
+  if (!mounted) {
+    return (
+      <span className={className} aria-label={text}>
+        <span aria-hidden="true">
+          {cursor && (
+            <span className="inline-block ml-0.5 opacity-100">
+              {cursorChar}
+            </span>
+          )}
+        </span>
+      </span>
+    )
+  }
 
   return (
     <span className={className} aria-label={text}>
