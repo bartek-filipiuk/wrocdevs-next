@@ -23,11 +23,19 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   once = true,
   className = '',
 }) => {
+  const [mounted, setMounted] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
+  // Mount check to prevent hydration mismatch
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     // Check for reduced motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     setPrefersReducedMotion(mediaQuery.matches)
@@ -38,7 +46,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
+  }, [mounted])
 
   useEffect(() => {
     // If user prefers reduced motion, show content immediately
@@ -74,8 +82,9 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     return () => observer.disconnect()
   }, [threshold, once, prefersReducedMotion])
 
-  // If reduced motion, render without animation styles
-  if (prefersReducedMotion) {
+  // Before mount or if reduced motion, render without animation styles
+  // This ensures server and initial client render match
+  if (!mounted || prefersReducedMotion) {
     return <div className={className}>{children}</div>
   }
 

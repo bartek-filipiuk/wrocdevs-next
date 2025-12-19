@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import type { UpcomingEventsBlock as EventsProps } from '@/payload-types'
 
@@ -8,20 +8,35 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
+// Extracted to avoid hydration mismatch - returns consistent placeholder on server
+const formatDateInfo = (dateString: string, mounted: boolean) => {
+  const date = new Date(dateString)
+  if (!mounted) {
+    // Return placeholder that matches structure but won't cause hydration issues
+    return {
+      day: date.getUTCDate(),
+      month: date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }),
+      time: '--:--',
+    }
+  }
+  return {
+    day: date.getDate(),
+    month: date.toLocaleDateString('en-US', { month: 'short' }),
+    time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+  }
+}
+
 export const UpcomingEventsBlock: React.FC<EventsProps> = ({
   sectionTitle,
   sectionDescription,
   events,
   viewAllLink,
 }) => {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return {
-      day: date.getDate(),
-      month: date.toLocaleDateString('en-US', { month: 'short' }),
-      time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-    }
-  }
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-b from-transparent via-primary/5 to-transparent">
@@ -45,7 +60,7 @@ export const UpcomingEventsBlock: React.FC<EventsProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events?.map((event, index) => {
-            const dateInfo = event.date ? formatDate(event.date) : null
+            const dateInfo = event.date ? formatDateInfo(event.date, mounted) : null
 
             return (
               <ScrollReveal key={index} animation="fade-up" delay={index * 100}>
