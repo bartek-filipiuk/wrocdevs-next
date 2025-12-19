@@ -49,6 +49,9 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   }, [mounted])
 
   useEffect(() => {
+    // Don't set up observer until mounted (ref needs to be attached)
+    if (!mounted) return
+
     // If user prefers reduced motion, show content immediately
     if (prefersReducedMotion) {
       setIsRevealed(true)
@@ -80,7 +83,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     observer.observe(element)
 
     return () => observer.disconnect()
-  }, [threshold, once, prefersReducedMotion])
+  }, [threshold, once, prefersReducedMotion, mounted])
 
   // Before mount or if reduced motion, render without animation styles
   // This ensures server and initial client render match
