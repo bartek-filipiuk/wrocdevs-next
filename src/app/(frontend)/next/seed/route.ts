@@ -31,6 +31,11 @@ export async function POST(): Promise<Response> {
 }
 
 export async function GET(): Promise<Response> {
+  // Disable seed endpoint in production - this would wipe all content!
+  if (process.env.NODE_ENV === 'production') {
+    return new Response('Seed endpoint disabled in production.', { status: 403 })
+  }
+
   const payload = await getPayload({ config })
 
   try {
