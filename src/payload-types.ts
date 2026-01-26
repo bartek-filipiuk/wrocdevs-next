@@ -1438,9 +1438,17 @@ export interface EmbedBlock {
    */
   description?: string | null;
   /**
+   * Choose how to embed content
+   */
+  embedType?: ('iframe' | 'html') | null;
+  /**
    * URL of the embed (e.g., Luma event, YouTube video)
    */
-  embedUrl: string;
+  embedUrl?: string | null;
+  /**
+   * Paste HTML embed code (scripts, iframes, forms)
+   */
+  htmlCode?: string | null;
   /**
    * Descriptive title for screen readers
    */
@@ -2084,7 +2092,9 @@ export interface FormBlockSelect<T extends boolean = true> {
 export interface EmbedBlockSelect<T extends boolean = true> {
   headline?: T;
   description?: T;
+  embedType?: T;
   embedUrl?: T;
+  htmlCode?: T;
   title?: T;
   width?: T;
   height?: T;
