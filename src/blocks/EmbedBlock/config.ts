@@ -28,13 +28,36 @@ export const EmbedBlock: Block = {
       },
     },
     {
+      name: 'embedType',
+      type: 'select',
+      label: 'Embed Type',
+      defaultValue: 'iframe',
+      options: [
+        { label: 'Iframe URL', value: 'iframe' },
+        { label: 'Raw HTML', value: 'html' },
+      ],
+      admin: {
+        description: 'Choose how to embed content',
+      },
+    },
+    {
       name: 'embedUrl',
       type: 'text',
-      required: true,
       label: 'Embed URL',
       admin: {
         description: 'URL of the embed (e.g., Luma event, YouTube video)',
         placeholder: 'https://luma.com/embed/event/...',
+        condition: (_, siblingData) => siblingData?.embedType !== 'html',
+      },
+    },
+    {
+      name: 'htmlCode',
+      type: 'textarea',
+      label: 'HTML Code',
+      admin: {
+        description: 'Paste HTML embed code (scripts, iframes, forms)',
+        rows: 10,
+        condition: (_, siblingData) => siblingData?.embedType === 'html',
       },
     },
     {
@@ -44,10 +67,14 @@ export const EmbedBlock: Block = {
       localized: true,
       admin: {
         description: 'Descriptive title for screen readers',
+        condition: (_, siblingData) => siblingData?.embedType !== 'html',
       },
     },
     {
       type: 'row',
+      admin: {
+        condition: (_, siblingData) => siblingData?.embedType !== 'html',
+      },
       fields: [
         {
           name: 'width',
